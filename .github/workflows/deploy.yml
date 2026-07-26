@@ -30,8 +30,7 @@ jobs:
         run: |
           rm -rf _site
           mkdir _site
-          unzip -q pokemon-ss-v6-site.zip -d _site
-
+          unzip -q pokemon-ss-v7-site.zip -d _site
       - name: Configura GitHub Pages
         uses: actions/configure-pages@v5
 
