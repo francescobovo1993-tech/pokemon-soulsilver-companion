@@ -1,0 +1,46 @@
+name: Pubblica SoulSilver Companion
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Scarica il repository
+        uses: actions/checkout@v6
+
+      - name: Estrai il sito
+        run: |
+          rm -rf _site
+          mkdir _site
+          unzip -q pokemon-ss-v6-site.zip -d _site
+
+      - name: Configura GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Prepara i file per Pages
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+          include-hidden-files: true
+
+      - name: Pubblica il sito
+        id: deployment
+        uses: actions/deploy-pages@v4
